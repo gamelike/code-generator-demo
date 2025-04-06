@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: generator
+    mcp:
+      server:
+        name: generator-server
+        version: 0.0.1
+        type: SYNC
+        sse-message-endpoint: /messages
+
+server:
+  port: 18000
