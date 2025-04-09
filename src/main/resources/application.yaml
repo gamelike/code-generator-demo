@@ -1,6 +1,7 @@
 spring:
   application:
     name: generator
+  ai:
     mcp:
       server:
         name: generator-server

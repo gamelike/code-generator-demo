@@ -18,41 +18,6 @@ import kotlin.jvm.java
 object GeneratorTool {
     private val generatorService = SpringContextHolder.getBean(GeneratorService::class.java)
 
-    fun toolCallback(): List<MethodToolCallback> {
-        val toolEntityMethod = ReflectionUtils.findMethod(
-            GeneratorTool::class.java, "generateEntity",
-            ClassInfo::class.java
-        )
-        if (toolEntityMethod == null) {
-            throw IllegalStateException("Tool method generateEntity not found")
-        }
-        val toolRepositoryMethod = ReflectionUtils.findMethod(
-            GeneratorTool::class.java, "generateRepository",
-            ClassInfo::class.java
-        )
-        if (toolRepositoryMethod == null) {
-            throw IllegalStateException("Tool method generateRepository not found")
-        }
-        return listOf(
-            MethodToolCallback.builder()
-                .toolDefinition(
-                    ToolDefinition.builder(toolEntityMethod)
-                        .description("Generate the entity code by freemarker.")
-                        .build()
-                ).toolMethod(toolEntityMethod)
-                .toolObject(GeneratorTool)
-                .build(),
-            MethodToolCallback.builder()
-                .toolDefinition(
-                    ToolDefinition.builder(toolRepositoryMethod)
-                        .description("Generate the entity code by freemarker.")
-                        .build()
-                ).toolMethod(toolRepositoryMethod)
-                .toolObject(GeneratorTool)
-                .build()
-        )
-    }
-
     @Tool(description = "Generate entity code by freemarker.")
     fun generateEntity(classInfo: ClassInfo, filePath: String) =
         generatorService.generateEntity(classInfo, filePath)
@@ -60,4 +25,13 @@ object GeneratorTool {
     @Tool(description = "Generate repository code by freemarker.")
     fun generateRepository(classInfo: ClassInfo, filePath: String) =
         generatorService.generateRepository(classInfo, filePath)
+
+
+    @Tool(description = "Generate service code by freemarker.")
+    fun generateService(classInfo: ClassInfo, filePath: String) =
+        generatorService.generateService(classInfo, filePath)
+
+    @Tool(description = "Generate controller code by freemarker.")
+    fun generateController(classInfo: ClassInfo, filePath: String) =
+        generatorService.generateController(classInfo, filePath)
 }

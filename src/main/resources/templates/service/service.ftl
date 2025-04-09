@@ -8,7 +8,7 @@ public interface ${entityName}Service {
     /**
     * @param ${entityName} 更新或插入对应实体
     */
-    private ${entityName} queryById(<#list fieldList as fieldItem > <#if fieldItem.primaryKey>${fieldItem.type} ${fieldItem.name}</#if> </#list>);
+    private ${entityName} queryById(<#list fieldList as fieldItem ><#if fieldItem.primaryKey>${fieldItem.type} ${fieldItem.name}</#if></#list>);
 
     /**
     * @param ${entityName} 更新或插入对应实体
@@ -18,5 +18,5 @@ public interface ${entityName}Service {
     /**
     * @param id 根据主键id删除对应实体
     */
-    private int delete(<#list fieldList as fieldItem > <#if fieldItem.primaryKey>${fieldItem.type} ${fieldItem.name}</#if> </#list>);
+    private int delete(<#list fieldList as fieldItem ><#if fieldItem.primaryKey>${fieldItem.type} ${fieldItem.name}</#if></#list>);
 }

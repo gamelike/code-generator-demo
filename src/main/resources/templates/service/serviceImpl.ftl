@@ -17,7 +17,7 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
     * @param ${entityName} 更新或插入对应实体
     */
     @Overwrite
-    private ${entityName} queryById(<#list fieldList as fieldItem > <#if fieldItem.primaryKey>${fieldItem.type} id</#if> </#list>) {
+    private ${entityName} queryById(<#list fieldList as fieldItem ><#if fieldItem.primaryKey>${fieldItem.type} id</#if></#list>) {
         return ${entityName?uncap_first}DAO.queryById(id);
     }
 
@@ -26,7 +26,7 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
     */
     @Overwrite
     private int upsert(${entityName} ${entityName?uncap_first}) {
-        if (queryById(<#list fieldList as fieldItem > <#if fieldItem.primaryKey>${entityName?uncap_first}.${fieldItem.name}</#if> </#list>) == null) {
+        if (queryById(<#list fieldList as fieldItem ><#if fieldItem.primaryKey>${entityName?uncap_first}.${fieldItem.name}</#if></#list>) == null) {
             return ${entityName?uncap_first}DAO.add(${entityName?uncap_first});
         } else {
             return ${entityName?uncap_first}DAO.update(${entityName?uncap_first});
@@ -37,7 +37,7 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
     * @param id 根据主键id删除对应实体
     */
     @Overwrite
-    private int delete(<#list fieldList as fieldItem > <#if fieldItem.primaryKey>${fieldItem.type} id</#if> </#list>) {
+    private int delete(<#list fieldList as fieldItem><#if fieldItem.primaryKey>${fieldItem.type} id</#if></#list>) {
         return ${entityName?uncap_first}DAO.deleteById(id);
     }
 }
