@@ -1,0 +1,41 @@
+/* code generate by freemarker. */
+package ${packageName}.controller;
+
+import ${packageName}.service.WeakPwdNewReportService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("v1/")
+@Slf4j
+@RequiredArgsConstructor
+public class ${entityName}Controller {
+
+    private final ${entityName}Service ${entityName?uncap_first}Service;
+
+    @GetMapping("{id}")
+    public ResponseEntity<${entityName}> getWeakPwdReport(@PathVariable("id") String id) {
+        return ResponseEntity.ok(${entityName?uncap_first}Service.queryById(id));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteWeakPwdReport(@PathVariable("id") String id) {
+        ${entityName?uncap_first}Service.deleteWeakPwdReport(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("new")
+    public ResponseEntity<Void> new(@RequestBody ${entityName} ${entityName?uncap_first}) {
+        ${entityName}Service.upsert(${entityName?uncap_first});
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("edit")
+    public ResponseEntity<Void> editWeakPwdReport(@RequestBody ${entityName} ${entityName?uncap_first}) {
+        weakPwdReportService.upsert(${entityName?uncap_first});
+        return ResponseEntity.ok().build();
+    }
+}

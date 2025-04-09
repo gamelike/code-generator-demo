@@ -54,10 +54,10 @@ object GeneratorTool {
     }
 
     @Tool(description = "Generate entity code by freemarker.")
-    fun generateEntity(classInfo: ClassInfo) =
-        generatorService.generateEntity(classInfo)
+    fun generateEntity(classInfo: ClassInfo, filePath: String) =
+        generatorService.generateEntity(classInfo, filePath)
 
     @Tool(description = "Generate repository code by freemarker.")
-    fun generateRepository(classInfo: ClassInfo) =
-        generatorService.generateRepository(classInfo)
+    fun generateRepository(classInfo: ClassInfo, filePath: String) =
+        generatorService.generateRepository(classInfo, filePath)
 }

@@ -7,6 +7,7 @@ package com.gamelike.constant
  */
 enum class GenerateType {
     SERVICE,
+    SERVICE_IMPL,
     REPOSITORY,
     CONTROLLER,
     ENTITY,
