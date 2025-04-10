@@ -18,13 +18,13 @@ public class ${entityName}Controller {
     private final ${entityName}Service ${entityName?uncap_first}Service;
 
     @GetMapping("{id}")
-    public ResponseEntity<${entityName}> getWeakPwdReport(@PathVariable("id") String id) {
+    public ResponseEntity<${entityName}> get(@PathVariable("id") String id) {
         return ResponseEntity.ok(${entityName?uncap_first}Service.queryById(id));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteWeakPwdReport(@PathVariable("id") String id) {
-        ${entityName?uncap_first}Service.deleteWeakPwdReport(id);
+    public ResponseEntity<Void> delete(@PathVariable("id") String id) {
+        ${entityName?uncap_first}Service.delete(id);
         return ResponseEntity.ok().build();
     }
 
