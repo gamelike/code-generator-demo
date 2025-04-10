@@ -75,7 +75,7 @@ class GeneratorService(
 
     private fun subPath(generateType: GenerateType) = when (generateType) {
         GenerateType.ENTITY -> "model"
-        GenerateType.REPOSITORY -> "dao"
+        GenerateType.REPOSITORY -> "repository"
         GenerateType.SERVICE -> "service"
         GenerateType.SERVICE_IMPL -> "service" + File.separator + "impl"
         GenerateType.CONTROLLER -> "controller"

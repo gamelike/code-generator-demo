@@ -27,10 +27,15 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
     */
     @Override
     public int upsert(${entityName} ${entityName?uncap_first}) {
-        if (queryById(<#list fieldList as fieldItem ><#if fieldItem.primaryKey>${entityName?uncap_first}.get${fieldItem.name?cap_first}()</#if></#list>) == null) {
-            return ${entityName?uncap_first}DAO.add(${entityName?uncap_first});
-        } else {
-            return ${entityName?uncap_first}DAO.update(${entityName?uncap_first});
+        try {
+            if (queryById(<#list fieldList as fieldItem ><#if fieldItem.primaryKey>${entityName?uncap_first}.get${fieldItem.name?cap_first}()</#if></#list>) == null) {
+                return ${entityName?uncap_first}DAO.add(${entityName?uncap_first});
+            } else {
+                return ${entityName?uncap_first}DAO.update(${entityName?uncap_first});
+            }
+        } catch (Exception e) {
+            log.error("upsert ${entityName} error", e);
+            return 0;
         }
     }
 
@@ -38,7 +43,13 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
     * @param id 根据主键id删除对应实体
     */
     @Override
-    private int delete(<#list fieldList as fieldItem><#if fieldItem.primaryKey>${fieldItem.type} id</#if></#list>) {
-        return ${entityName?uncap_first}DAO.deleteById(id);
+    public int delete(<#list fieldList as fieldItem><#if fieldItem.primaryKey>${fieldItem.type} id</#if></#list>) {
+        try {
+            ${entityName?uncap_first}DAO.deleteById(id);
+            return 1;
+        } catch (Exception e) {
+            log.error("delete ${entityName} error", e);
+            return 0;
+        }
     }
 }

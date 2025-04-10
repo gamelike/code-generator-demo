@@ -29,7 +29,7 @@ public class ${entityName}Controller {
     }
 
     @PutMapping("new")
-    public ResponseEntity<Void> new(@RequestBody ${entityName} ${entityName?uncap_first}) {
+    public ResponseEntity<Void> new${entityName}(@RequestBody ${entityName} ${entityName?uncap_first}) {
         ${entityName?uncap_first}Service.upsert(${entityName?uncap_first});
         return ResponseEntity.ok().build();
     }
