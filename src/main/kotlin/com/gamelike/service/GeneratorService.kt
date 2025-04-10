@@ -46,7 +46,10 @@ class GeneratorService(
             dir.mkdirs()
         }
         val resourcesTemplate = template(generateType)
-        OutputStreamWriter(FileOutputStream(dirPath + File.separator + classInfo.entityName + suffix(generateType))).use {
+        OutputStreamWriter(
+            FileOutputStream(dirPath + File.separator + classInfo.entityName + suffix(generateType)),
+            Charsets.UTF_8
+        ).use {
             freeMarker.getTemplate(resourcesTemplate).process(classInfo, it)
             it.flush()
         }

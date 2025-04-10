@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ${packageName}.service.${entityName}Service;
-import ${packageName}.dao.${entityName}DAO;
-import ${packageName}.model.${entityName}DAO;
+import ${packageName}.repository.${entityName}DAO;
+import ${packageName}.model.${entityName};
 
 @Service
 @Slf4j
@@ -29,9 +29,11 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
     public int upsert(${entityName} ${entityName?uncap_first}) {
         try {
             if (queryById(<#list fieldList as fieldItem ><#if fieldItem.primaryKey>${entityName?uncap_first}.get${fieldItem.name?cap_first}()</#if></#list>) == null) {
-                return ${entityName?uncap_first}DAO.add(${entityName?uncap_first});
+                ${entityName?uncap_first}DAO.add(${entityName?uncap_first});
+                return 1;
             } else {
-                return ${entityName?uncap_first}DAO.update(${entityName?uncap_first});
+                ${entityName?uncap_first}DAO.update(${entityName?uncap_first});
+                return 1;
             }
         } catch (Exception e) {
             log.error("upsert ${entityName} error", e);
