@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ${packageName}.service.${entityName}Service;
+import ${packageName}.dao.${entityName}DAO;
 import ${packageName}.model.${entityName}DAO;
 
 @Service
@@ -16,17 +17,17 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
     /**
     * @param ${entityName} 更新或插入对应实体
     */
-    @Overwrite
-    private ${entityName} queryById(<#list fieldList as fieldItem ><#if fieldItem.primaryKey>${fieldItem.type} id</#if></#list>) {
+    @Override
+    public ${entityName} queryById(<#list fieldList as fieldItem ><#if fieldItem.primaryKey>${fieldItem.type} id</#if></#list>) {
         return ${entityName?uncap_first}DAO.queryById(id);
     }
 
     /**
     * @param ${entityName} 更新或插入对应实体
     */
-    @Overwrite
-    private int upsert(${entityName} ${entityName?uncap_first}) {
-        if (queryById(<#list fieldList as fieldItem ><#if fieldItem.primaryKey>${entityName?uncap_first}.${fieldItem.name}</#if></#list>) == null) {
+    @Override
+    public int upsert(${entityName} ${entityName?uncap_first}) {
+        if (queryById(<#list fieldList as fieldItem ><#if fieldItem.primaryKey>${entityName?uncap_first}.get${fieldItem.name?cap_first}()</#if></#list>) == null) {
             return ${entityName?uncap_first}DAO.add(${entityName?uncap_first});
         } else {
             return ${entityName?uncap_first}DAO.update(${entityName?uncap_first});
@@ -36,7 +37,7 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
     /**
     * @param id 根据主键id删除对应实体
     */
-    @Overwrite
+    @Override
     private int delete(<#list fieldList as fieldItem><#if fieldItem.primaryKey>${fieldItem.type} id</#if></#list>) {
         return ${entityName?uncap_first}DAO.deleteById(id);
     }

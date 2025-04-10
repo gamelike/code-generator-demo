@@ -19,19 +19,19 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ${entityName} extends EntityValue implements Serializable {
 <#list fieldList as fieldItem >
-    private ${fieldItem.type} ${fieldItem.name}
+    private ${fieldItem.type} ${fieldItem.name};
 </#list>
 
 
 <#if fieldList ? exists && fieldList ? size gt 0>
     <#list fieldList as fieldItem >
         <#if fieldItem.primaryKey>
-        @Id
-        </#if>
-        @Column(name = "${fieldItem.columnName}")
-        public ${fieldItem.type} get${fieldItem.name?cap_first}() {
+    @Id
+    </#if>
+    @Column(name = "${fieldItem.columnName}")
+    public ${fieldItem.type} get${fieldItem.name?cap_first}() {
         return ${fieldItem.name};
-        }
+    }
     </#list>
 </#if>
 }

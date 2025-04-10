@@ -3,7 +3,7 @@ package ${packageName}.dao;
 
 import org.springframework.stereotype.Repository;
 
-import ${packageName}.model.Algorithm;
+import ${packageName}.model.${entityName};
 import com.ums.datasource.util.BaseEntityDAO;
 
 @Repository

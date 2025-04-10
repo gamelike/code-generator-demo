@@ -1,7 +1,8 @@
 /* code generate by freemarker. */
 package ${packageName}.controller;
 
-import ${packageName}.service.WeakPwdNewReportService;
+import ${packageName}.service.${entityName}Service;
+import ${packageName}.model.${entityName};
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("v1/")
+@RequestMapping("v1")
 @Slf4j
 @RequiredArgsConstructor
 public class ${entityName}Controller {
@@ -29,13 +30,13 @@ public class ${entityName}Controller {
 
     @PutMapping("new")
     public ResponseEntity<Void> new(@RequestBody ${entityName} ${entityName?uncap_first}) {
-        ${entityName}Service.upsert(${entityName?uncap_first});
+        ${entityName?uncap_first}Service.upsert(${entityName?uncap_first});
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("edit")
-    public ResponseEntity<Void> editWeakPwdReport(@RequestBody ${entityName} ${entityName?uncap_first}) {
-        weakPwdReportService.upsert(${entityName?uncap_first});
+    public ResponseEntity<Void> edit(@RequestBody ${entityName} ${entityName?uncap_first}) {
+        ${entityName?uncap_first}Service.upsert(${entityName?uncap_first});
         return ResponseEntity.ok().build();
     }
 }
