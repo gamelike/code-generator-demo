@@ -18,6 +18,20 @@ import kotlin.jvm.java
 object GeneratorTool {
     private val generatorService = SpringContextHolder.getBean(GeneratorService::class.java)
 
+    @Tool(description = "Generates code")
+    fun generateCode(classInfo: ClassInfo, filePath: String): String {
+        try {
+            generatorService.generateEntity(classInfo, filePath)
+            generatorService.generateRepository(classInfo, filePath)
+            generatorService.generateService(classInfo, filePath)
+            generatorService.generateController(classInfo, filePath)
+            return "success"
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+
     @Tool(description = "Generate entity code by freemarker.")
     fun generateEntity(classInfo: ClassInfo, filePath: String) =
         generatorService.generateEntity(classInfo, filePath)
