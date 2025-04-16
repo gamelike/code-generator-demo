@@ -1,7 +1,8 @@
 /* code generate by freemarker. */
 package ${packageName}.service;
 
-import ${packageName}.model.${entityName};
+import ${packageName}.model.entity.${entityName};
+import java.util.List;
 
 public interface ${entityName}Service {
 
@@ -15,8 +16,10 @@ public interface ${entityName}Service {
     */
     int upsert(${entityName} ${entityName?uncap_first});
 
+    int upsert(List<${entityName}> ${entityName?uncap_first}List);
+
     /**
     * @param id 根据主键id删除对应实体
     */
-    int delete(<#list fieldList as fieldItem ><#if fieldItem.primaryKey>${fieldItem.type} ${fieldItem.name}</#if></#list>);
+    int delete(<#list fieldList as fieldItem ><#if fieldItem.primaryKey>${fieldItem.type}... ${fieldItem.name}</#if></#list>);
 }

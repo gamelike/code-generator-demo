@@ -32,20 +32,20 @@ object GeneratorTool {
     }
 
 
-    @Tool(description = "Generate entity code by freemarker.")
+//    @Tool(description = "Generate entity code by freemarker.")
     fun generateEntity(classInfo: ClassInfo, filePath: String) =
         generatorService.generateEntity(classInfo, filePath)
 
-    @Tool(description = "Generate repository code by freemarker.")
+//    @Tool(description = "Generate repository code by freemarker.")
     fun generateRepository(classInfo: ClassInfo, filePath: String) =
         generatorService.generateRepository(classInfo, filePath)
 
 
-    @Tool(description = "Generate service code by freemarker.")
+//    @Tool(description = "Generate service code by freemarker.")
     fun generateService(classInfo: ClassInfo, filePath: String) =
         generatorService.generateService(classInfo, filePath)
 
-    @Tool(description = "Generate controller code by freemarker.")
+//    @Tool(description = "Generate controller code by freemarker.")
     fun generateController(classInfo: ClassInfo, filePath: String) =
         generatorService.generateController(classInfo, filePath)
 }

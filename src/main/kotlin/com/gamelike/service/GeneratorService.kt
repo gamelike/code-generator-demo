@@ -4,7 +4,6 @@ import com.gamelike.constant.GenerateType
 import com.gamelike.model.ClassInfo
 import freemarker.template.Configuration
 import org.springframework.stereotype.Service
-import org.springframework.web.servlet.function.RequestPredicates.path
 import java.io.*
 
 
@@ -77,7 +76,7 @@ class GeneratorService(
     }
 
     private fun subPath(generateType: GenerateType) = when (generateType) {
-        GenerateType.ENTITY -> "model"
+        GenerateType.ENTITY -> "model" + File.separator + "entity"
         GenerateType.REPOSITORY -> "repository"
         GenerateType.SERVICE -> "service"
         GenerateType.SERVICE_IMPL -> "service" + File.separator + "impl"

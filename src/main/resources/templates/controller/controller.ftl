@@ -2,7 +2,7 @@
 package ${packageName}.controller;
 
 import ${packageName}.service.${entityName}Service;
-import ${packageName}.model.${entityName};
+import ${packageName}.model.entity.${entityName};
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

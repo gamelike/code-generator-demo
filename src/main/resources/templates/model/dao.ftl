@@ -3,9 +3,23 @@ package ${packageName}.repository;
 
 import org.springframework.stereotype.Repository;
 
-import ${packageName}.model.${entityName};
+import ${packageName}.model.entity.${entityName};
+import com.ums.datasource.util.spring.PageData;
 import com.ums.datasource.util.BaseEntityDAO;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import java.util.List;
 
 @Repository
 public class ${entityName}DAO extends BaseEntityDAO<${entityName}> {
+    public List<String> existsByIds(List<String> ids) {
+        NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(getJdbcTemplate());
+        String sql = """
+        select id from ${tableName}
+        where id in (:ids)
+        """;
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("ids", ids);
+        return jdbcTemplate.queryForList(sql, params, String.class);
+    }
 }
