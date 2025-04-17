@@ -23,7 +23,7 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
     */
     @Override
     public ${entityName} queryById(<#list fieldList as fieldItem ><#if fieldItem.primaryKey>${fieldItem.type} id</#if></#list>) {
-        if (ObjectUtils.isBlank(id)) {
+        if (ObjectUtils.isEmpty(id)) {
             throw new BizIllegalArgumentException("id是空");
         }
         return ${entityName?uncap_first}DAO.queryById(id);
@@ -84,7 +84,7 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
     */
     @Override
     public int delete(<#list fieldList as fieldItem><#if fieldItem.primaryKey>${fieldItem.type}... id</#if></#list>) {
-        if (ObjectUtils.isBlank(id)) {
+        if (ObjectUtils.isEmpty(id)) {
             throw new BizIllegalArgumentException("id是空");
         }
         try {
