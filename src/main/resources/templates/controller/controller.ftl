@@ -29,13 +29,13 @@ public class ${entityName}Controller {
 
     @PutMapping("new")
     public ResponseEntity<Void> new${entityName}(@RequestBody ${entityName} ${entityName?uncap_first}) {
-        ${entityName?uncap_first}Service.upsert(${entityName?uncap_first});
+        ${entityName?uncap_first}Service.insert(${entityName?uncap_first});
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("edit")
     public ResponseEntity<Void> edit(@RequestBody ${entityName} ${entityName?uncap_first}) {
-        ${entityName?uncap_first}Service.upsert(${entityName?uncap_first});
+        ${entityName?uncap_first}Service.update(${entityName?uncap_first});
         return ResponseEntity.ok().build();
     }
 }
