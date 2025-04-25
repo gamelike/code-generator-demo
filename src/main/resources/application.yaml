@@ -13,3 +13,7 @@ spring:
 
   freemarker:
     charset: UTF-8
+logging:
+  level:
+    com: off
+    org: off
