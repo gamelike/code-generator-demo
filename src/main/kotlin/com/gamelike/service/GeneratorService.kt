@@ -22,6 +22,12 @@ class GeneratorService(
     fun generateEntity(classInfo: ClassInfo, filePath: String) =
         streamHandler(classInfo, GenerateType.ENTITY, filePath)
 
+    fun generatePageDTO(classInfo: ClassInfo, filePath: String) =
+        streamHandler(classInfo, GenerateType.PAGE_DTO, filePath)
+
+    fun generateQueryDTO(classInfo: ClassInfo, filePath: String) =
+        streamHandler(classInfo, GenerateType.QUERY_DTO, filePath)
+
     fun generateRepository(classInfo: ClassInfo) =
         streamHandler(classInfo, GenerateType.REPOSITORY)
 
@@ -29,7 +35,7 @@ class GeneratorService(
         streamHandler(classInfo, GenerateType.REPOSITORY, filePath)
 
     fun generateService(classInfo: ClassInfo, filePath: String): String {
-        streamHandler(classInfo, GenerateType.SERVICE, filePath)
+//        streamHandler(classInfo, GenerateType.SERVICE, filePath)
         streamHandler(classInfo, GenerateType.SERVICE_IMPL, filePath)
         return "success"
     }
@@ -73,21 +79,28 @@ class GeneratorService(
         GenerateType.SERVICE -> "service/service.ftl"
         GenerateType.SERVICE_IMPL -> "service/serviceImpl.ftl"
         GenerateType.CONTROLLER -> "controller/controller.ftl"
+        GenerateType.PAGE_DTO -> "model/pageDTO.ftl"
+        GenerateType.QUERY_DTO -> "model/queryDTO.ftl"
     }
 
     private fun subPath(generateType: GenerateType) = when (generateType) {
         GenerateType.ENTITY -> "model" + File.separator + "entity"
-        GenerateType.REPOSITORY -> "repository"
+        GenerateType.REPOSITORY -> "dao"
         GenerateType.SERVICE -> "service"
-        GenerateType.SERVICE_IMPL -> "service" + File.separator + "impl"
+        GenerateType.SERVICE_IMPL -> "service"
+//        GenerateType.SERVICE_IMPL -> "service" + File.separator + "impl"
         GenerateType.CONTROLLER -> "controller"
+        GenerateType.PAGE_DTO -> "model" + File.separator + "dto"
+        GenerateType.QUERY_DTO -> "model" + File.separator + "dto"
     }
 
     private fun suffix(generateType: GenerateType) = when (generateType) {
         GenerateType.ENTITY -> ".java"
         GenerateType.REPOSITORY -> "DAO.java"
         GenerateType.SERVICE -> "Service.java"
-        GenerateType.SERVICE_IMPL -> "ServiceImpl.java"
+        GenerateType.SERVICE_IMPL -> "Service.java"
         GenerateType.CONTROLLER -> "Controller.java"
+        GenerateType.PAGE_DTO -> "PageDTO.java"
+        GenerateType.QUERY_DTO -> "QueryDTO.java"
     }
 }
