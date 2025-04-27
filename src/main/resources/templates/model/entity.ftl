@@ -20,6 +20,7 @@ import lombok.experimental.Accessors;
 public class ${entityName} extends EntityValue implements Serializable {
 <#list fieldList as fieldItem >
     private ${fieldItem.type} ${fieldItem.name};
+
 </#list>
 
 
@@ -32,6 +33,7 @@ public class ${entityName} extends EntityValue implements Serializable {
     public ${fieldItem.type} get${fieldItem.name?cap_first}() {
         return ${fieldItem.name};
     }
+
     </#list>
 </#if>
 }

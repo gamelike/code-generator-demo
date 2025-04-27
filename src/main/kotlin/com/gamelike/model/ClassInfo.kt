@@ -4,6 +4,8 @@ data class ClassInfo(
     val packageName: String,
     val tableName: String,
     val entityName: String,
+    val entityNameCN: String,
+    val isMainTable: Boolean = true,
     val fieldList: List<FieldInfo>
 )
 

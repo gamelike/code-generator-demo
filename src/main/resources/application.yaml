@@ -13,7 +13,13 @@ spring:
 
   freemarker:
     charset: UTF-8
+
 logging:
   level:
-    com: off
-    org: off
+    com: info
+    org: info
+  pattern:
+    console:
+  file:
+    path: ${user.home}/logs
+    name: mcp-code-generate.log
