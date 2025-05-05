@@ -18,13 +18,14 @@ import kotlin.jvm.java
 object GeneratorTool {
     private val generatorService = SpringContextHolder.getBean(GeneratorService::class.java)
 
-    @Tool(description = "Generates code")
+    @Tool(description = "Generates code including entity, repository, service, controller, and DTOs")
     fun generateCode(classInfo: ClassInfo, filePath: String): String {
         try {
             generatorService.generateEntity(classInfo, filePath)
             generatorService.generateRepository(classInfo, filePath)
             generatorService.generateService(classInfo, filePath)
-            generatorService.generateController(classInfo, filePath)
+            generatorService.generateQueryDTO(classInfo, filePath)
+            generatorService.generateExcelDTO(classInfo, filePath)
             return "success"
         } catch (e: Exception) {
             throw e
@@ -45,7 +46,13 @@ object GeneratorTool {
     fun generateService(classInfo: ClassInfo, filePath: String) =
         generatorService.generateService(classInfo, filePath)
 
-//    @Tool(description = "Generate controller code by freemarker.")
-    fun generateController(classInfo: ClassInfo, filePath: String) =
-        generatorService.generateController(classInfo, filePath)
+
+//    @Tool(description = "Generate query DTO code by freemarker.")
+    fun generateQueryDTO(classInfo: ClassInfo, filePath: String) =
+        generatorService.generateQueryDTO(classInfo, filePath)
+
+//    @Tool(description = "Generate Excel DTO for import/export functionality.")
+    fun generateExcelDTO(classInfo: ClassInfo, filePath: String) =
+        generatorService.generateExcelDTO(classInfo, filePath)
+
 }

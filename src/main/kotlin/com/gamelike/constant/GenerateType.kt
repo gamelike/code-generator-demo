@@ -11,4 +11,6 @@ enum class GenerateType {
     REPOSITORY,
     CONTROLLER,
     ENTITY,
+    QUERY_DTO,
+    EXCEL_DTO
 }

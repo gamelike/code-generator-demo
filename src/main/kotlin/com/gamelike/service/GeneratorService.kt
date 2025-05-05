@@ -34,8 +34,11 @@ class GeneratorService(
         return "success"
     }
 
-    fun generateController(classInfo: ClassInfo, filePath: String) =
-        streamHandler(classInfo, GenerateType.CONTROLLER, filePath)
+    fun generateQueryDTO(classInfo: ClassInfo, filePath: String) =
+        streamHandler(classInfo, GenerateType.QUERY_DTO, filePath)
+
+    fun generateExcelDTO(classInfo: ClassInfo, filePath: String) =
+        streamHandler(classInfo, GenerateType.EXCEL_DTO, filePath)
 
     @Throws(IOException::class)
     private fun streamHandler(classInfo: ClassInfo, generateType: GenerateType, filePath: String): String {
@@ -73,6 +76,8 @@ class GeneratorService(
         GenerateType.SERVICE -> "service/service.ftl"
         GenerateType.SERVICE_IMPL -> "service/serviceImpl.ftl"
         GenerateType.CONTROLLER -> "controller/controller.ftl"
+        GenerateType.QUERY_DTO -> "model/queryDTO.ftl"
+        GenerateType.EXCEL_DTO -> "model/excelDTO.ftl"
     }
 
     private fun subPath(generateType: GenerateType) = when (generateType) {
@@ -81,6 +86,8 @@ class GeneratorService(
         GenerateType.SERVICE -> "service"
         GenerateType.SERVICE_IMPL -> "service" + File.separator + "impl"
         GenerateType.CONTROLLER -> "controller"
+        GenerateType.QUERY_DTO -> "model" + File.separator + "dto"
+        GenerateType.EXCEL_DTO -> "model" + File.separator + "dto"
     }
 
     private fun suffix(generateType: GenerateType) = when (generateType) {
@@ -89,5 +96,7 @@ class GeneratorService(
         GenerateType.SERVICE -> "Service.java"
         GenerateType.SERVICE_IMPL -> "ServiceImpl.java"
         GenerateType.CONTROLLER -> "Controller.java"
+        GenerateType.QUERY_DTO -> "QueryDTO.java"
+        GenerateType.EXCEL_DTO -> "ExcelDTO.java"
     }
 }
