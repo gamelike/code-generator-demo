@@ -12,5 +12,6 @@ enum class GenerateType {
     CONTROLLER,
     ENTITY,
     QUERY_DTO,
-    EXCEL_DTO
+    EXCEL_DTO,
+    EXCEL_LISTENER
 }

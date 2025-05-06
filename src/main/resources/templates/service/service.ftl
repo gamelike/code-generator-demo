@@ -12,8 +12,6 @@ package ${packageName}.service;
 
 import ${packageName}.model.entity.${entityName};
 import ${packageName}.model.dto.${entityName}QueryDTO;
-import ${packageName}.model.dto.${entityName}PageDTO;
-import ${packageName}.model.dto.${entityName}ExcelDTO;
 import com.ums.datasource.util.spring.PageData;
 
 import java.io.InputStream;
@@ -99,6 +97,7 @@ public interface ${entityName}Service {
 
     /**
      * 分页查询${entityName}列表
+     * TODO: 分页查询条件需要根据接口.
      *
      * @param queryDTO 分页查询条件，包含页码、每页记录数和查询条件
      * @return 分页数据，包含总记录数和当前页数据

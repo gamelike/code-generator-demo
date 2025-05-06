@@ -9,7 +9,7 @@
  * @version 1.0
  */
 <#import "../global.ftl" as common>
-package ${packageName}.repository;
+package ${packageName}.dao;
 
 import org.springframework.stereotype.Repository;
 
@@ -64,15 +64,15 @@ public class ${entityName}DAO extends BaseEntityDAO<${entityName}> {
      * 根据提供的分页参数和查询条件，返回分页结果
      * 包含总记录数和当前页的数据列表
      *
-     * @param pageDTO 分页查询条件，包含页码、每页记录数和查询条件
+     * @param queryDTO 分页查询条件，包含页码、每页记录数和查询条件
      * @return 分页数据对象，包含总记录数和当前页数据
      */
-    public PageData<${entityName}> findByPage(${entityName}PageDTO pageDTO) {
+    public PageData<${entityName}> findByPage(${entityName}QueryDTO queryDTO) {
         // 初始化SQL查询语句和参数列表
         String sql = "SELECT t.* FROM ${tableName} t WHERE 1=1";
         List<Object> params = new ArrayList<>();
         // TODO 分页查询逻辑补充.
         // 调用父类的分页查询方法
-        return super.queryPageData(params, sql, pageDTO.getPage(), pageDTO.getPerPage());
+        return super.queryPageData(params, sql, queryDTO.getPage(), queryDTO.getPerPage());
     }
 }

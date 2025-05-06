@@ -7,13 +7,13 @@ spring:
         name: generator-server
         version: 0.0.1
         type: SYNC
+        stdio: true
+        enabled: true
   main:
     banner-mode: off
     web-application-type: none
-
   freemarker:
     charset: UTF-8
-
 logging:
   level:
     com: info
@@ -21,5 +21,4 @@ logging:
   pattern:
     console:
   file:
-    path: ${user.home}/logs
     name: mcp-code-generate.log

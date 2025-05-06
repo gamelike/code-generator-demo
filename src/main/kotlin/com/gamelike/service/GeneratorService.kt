@@ -16,14 +16,8 @@ class GeneratorService(
     private val freeMarker: Configuration
 ) {
 
-    fun generateEntity(classInfo: ClassInfo) =
-        streamHandler(classInfo, GenerateType.ENTITY)
-
     fun generateEntity(classInfo: ClassInfo, filePath: String) =
         streamHandler(classInfo, GenerateType.ENTITY, filePath)
-
-    fun generateRepository(classInfo: ClassInfo) =
-        streamHandler(classInfo, GenerateType.REPOSITORY)
 
     fun generateRepository(classInfo: ClassInfo, filePath: String) =
         streamHandler(classInfo, GenerateType.REPOSITORY, filePath)
@@ -39,6 +33,9 @@ class GeneratorService(
 
     fun generateExcelDTO(classInfo: ClassInfo, filePath: String) =
         streamHandler(classInfo, GenerateType.EXCEL_DTO, filePath)
+
+    fun generateExcelImportListener(classInfo: ClassInfo, filePath: String) =
+        streamHandler(classInfo, GenerateType.EXCEL_LISTENER, filePath)
 
     @Throws(IOException::class)
     private fun streamHandler(classInfo: ClassInfo, generateType: GenerateType, filePath: String): String {
@@ -75,6 +72,7 @@ class GeneratorService(
         GenerateType.REPOSITORY -> "model/dao.ftl"
         GenerateType.SERVICE -> "service/service.ftl"
         GenerateType.SERVICE_IMPL -> "service/serviceImpl.ftl"
+        GenerateType.EXCEL_LISTENER -> "service/listener/listener.ftl"
         GenerateType.CONTROLLER -> "controller/controller.ftl"
         GenerateType.QUERY_DTO -> "model/queryDTO.ftl"
         GenerateType.EXCEL_DTO -> "model/excelDTO.ftl"
@@ -82,9 +80,10 @@ class GeneratorService(
 
     private fun subPath(generateType: GenerateType) = when (generateType) {
         GenerateType.ENTITY -> "model" + File.separator + "entity"
-        GenerateType.REPOSITORY -> "repository"
+        GenerateType.REPOSITORY -> "dao"
         GenerateType.SERVICE -> "service"
         GenerateType.SERVICE_IMPL -> "service" + File.separator + "impl"
+        GenerateType.EXCEL_LISTENER -> "service" + File.separator + "listener"
         GenerateType.CONTROLLER -> "controller"
         GenerateType.QUERY_DTO -> "model" + File.separator + "dto"
         GenerateType.EXCEL_DTO -> "model" + File.separator + "dto"
@@ -95,6 +94,7 @@ class GeneratorService(
         GenerateType.REPOSITORY -> "DAO.java"
         GenerateType.SERVICE -> "Service.java"
         GenerateType.SERVICE_IMPL -> "ServiceImpl.java"
+        GenerateType.EXCEL_LISTENER -> "ExcelImportListener.java"
         GenerateType.CONTROLLER -> "Controller.java"
         GenerateType.QUERY_DTO -> "QueryDTO.java"
         GenerateType.EXCEL_DTO -> "ExcelDTO.java"

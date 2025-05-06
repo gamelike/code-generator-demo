@@ -12,10 +12,9 @@ import com.ums.service.common.exception.BizResourceNotFoundException;
 import com.ums.common.tools.basic.UUID;
 import org.springframework.transaction.annotation.Transactional;
 import ${packageName}.service.${entityName}Service;
-import ${packageName}.repository.${entityName}DAO;
+import ${packageName}.dao.${entityName}DAO;
 import ${packageName}.model.entity.${entityName};
 import ${packageName}.model.dto.${entityName}QueryDTO;
-import ${packageName}.model.dto.${entityName}PageDTO;
 import ${packageName}.model.dto.${entityName}ExcelDTO;
 import com.ums.datasource.util.spring.PageData;
 
@@ -35,19 +34,20 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
 
     @Override
     public ${entityName} queryById(<#list fieldList as fieldItem ><#if fieldItem.primaryKey>${fieldItem.type} id</#if></#list>) {
+        if (ObjectUtils.isEmpty(id)) {
+            throw new BizIllegalArgumentException("查询ID不能为空");
+        }
+        ${entityName} item;
         try {
-            if (ObjectUtils.isEmpty(id)) {
-                throw new BizIllegalArgumentException("查询ID不能为空");
-            }
-            ${entityName} item = ${entityName?uncap_first}DAO.queryById(id);
-            if (item == null) {
-                throw new BizResourceNotFoundException("资源不存在, id: " + id);
-            }
-            return item;
+            item = ${entityName?uncap_first}DAO.queryById(id);
         } catch (Exception e) {
             log.error("查询${entityName}错误", e);
             throw new BizInternalServerException("查询${entityName}错误");
         }
+        if (item == null) {
+            throw new BizResourceNotFoundException("资源不存在, id: " + id);
+        }
+        return item;
     }
 
     @Override
@@ -80,11 +80,8 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ${entityName} update(${entityName} ${entityName?uncap_first}) {
+        ${entityName} item = queryById(${entityName?uncap_first}.get${common.getPrimaryName(fieldList)?cap_first}());
         try {
-            ${entityName} item = queryById(${entityName?uncap_first}.get${common.getPrimaryName(fieldList)?cap_first}());
-            if (item == null) {
-                throw new BizResourceNotFoundException("资源不存在: entity: " + ${entityName?uncap_first});
-            }
             ${entityName?uncap_first}DAO.update(${entityName?uncap_first});
             return item;
         } catch (Exception e) {
@@ -122,9 +119,6 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
             throw new BizIllegalArgumentException("删除的ID不能为空");
         }
         ${entityName} item = queryById(id);
-        if(item == null) {
-            throw new BizResourceNotFoundException("资源不存在, id: " + id);
-        }
         try {
             ${entityName?uncap_first}DAO.deleteById(id);
             return item;
@@ -137,10 +131,10 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int batchDelete(List<${common.getPrimaryType(fieldList)}> ids) {
+        if (ObjectUtils.isEmpty(ids)) {
+            throw new BizIllegalArgumentException("删除的ID不能为空");
+        }
         try {
-            if (ObjectUtils.isEmpty(ids)) {
-                throw new BizIllegalArgumentException("删除的ID不能为空");
-            }
             int column = ${entityName?uncap_first}DAO.deleteById(ids.toArray(String[]::new));
             log.info("批量删除 {} 条${entityName}数据", column);
             return column;
@@ -151,9 +145,10 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
     }
 
     @Override
-    public PageData<${entityName}> findByPage(${entityName}PageDTO pageDTO) {
+    public PageData<${entityName}> findByPage(${entityName}QueryDTO queryDTO) {
+        // TODO: 参数校验实现
         try {
-            return ${entityName?uncap_first}DAO.findByPage(pageDTO);
+            return ${entityName?uncap_first}DAO.findByPage(queryDTO);
         } catch (Exception e) {
             log.error("分页查询${entityName}错误", e);
             throw new BizInternalServerException("分页查询${entityName}错误");
@@ -163,29 +158,11 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
     @Override
     public void exportToExcel(${entityName}QueryDTO queryDTO, OutputStream outputStream) throws IOException {
         try {
-            // TODO: 参数校验
+            // 参数校验
             if (outputStream == null) {
                 throw new BizIllegalArgumentException("输出流不能为空");
             }
-
-            // TODO: 实现Excel导出功能
-            // 1. 查询数据
-            // List<${entityName}> dataList = ${entityName?uncap_first}DAO.findByCondition(queryDTO);
-
-            // TODO: 数据量控制
-            // if (dataList.size() > MAX_EXPORT_ROWS) {
-            //     throw new BizIllegalArgumentException("导出数据量超过限制，请缩小查询范围");
-            // }
-
-            // 2. 转换为Excel DTO
-            // List<${entityName}ExcelDTO> excelDTOs = ${entityName}ExcelDTO.fromEntityList(dataList);
-
-            // 3. 使用EasyExcel导出
-            // EasyExcel.write(outputStream, ${entityName}ExcelDTO.class)
-            //     .sheet("${entityName}数据")
-            //     .doWrite(excelDTOs);
-
-            log.info("成功导出${entityName}数据到Excel");
+            // TODO: 实现Excel导出功能  https://github.com/fast-excel/fastexcel 使用fastexcel
         } catch (BizIllegalArgumentException e) {
             log.error("导出${entityName}数据到Excel参数错误: {}", e.getMessage());
             throw e;
@@ -196,53 +173,15 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int importFromExcel(InputStream inputStream) throws IOException {
         try {
-            // TODO: 参数校验
+            // 参数校验
             if (inputStream == null) {
                 throw new BizIllegalArgumentException("输入流不能为空");
             }
 
-            // TODO: 实现Excel导入功能
-            // 1. 使用EasyExcel读取数据
-            // List<${entityName}ExcelDTO> excelDTOs = EasyExcel.read(inputStream)
-            //     .head(${entityName}ExcelDTO.class)
-            //     .sheet()
-            //     .doReadSync();
-
-            // TODO: 数据校验
-            // List<String> errorMessages = new ArrayList<>();
-            // List<${entityName}ExcelDTO> validDTOs = new ArrayList<>();
-            //
-            // for (int i = 0; i < excelDTOs.size(); i++) {
-            //     ${entityName}ExcelDTO dto = excelDTOs.get(i);
-            //     try {
-            //         validateExcelDTO(dto);
-            //         validDTOs.add(dto);
-            //     } catch (BizIllegalArgumentException e) {
-            //         errorMessages.add("第" + (i + 2) + "行数据错误: " + e.getMessage());
-            //     }
-            // }
-            //
-            // if (!errorMessages.isEmpty()) {
-            //     // 根据业务需求决定是否继续处理有效数据
-            //     // 可以选择抛出异常或者只处理有效数据
-            //     throw new BizIllegalArgumentException("导入数据有误: " + String.join("; ", errorMessages));
-            // }
-
-            // 2. 转换为实体对象
-            // List<${entityName}> entities = ${entityName}ExcelDTO.toEntityList(validDTOs);
-
-            // TODO: 重复数据处理
-            // 检查是否有重复数据，并决定是新增还是更新
-            // 可以根据业务需求实现不同的处理策略
-
-            // 3. 批量保存（事务处理）
-            // int count = batchInsert(entities);
-
-            // log.info("成功从Excel导入 {} 条${entityName}数据", count);
-            // return count;
-
+            // TODO: 实现Excel导入功能 https://github.com/fast-excel/fastexcel 使用fastexcel
             return 0; // 临时返回值，实际实现时应返回导入的记录数
         } catch (BizIllegalArgumentException e) {
             log.error("导入${entityName}数据参数错误: {}", e.getMessage());
@@ -256,48 +195,13 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
     @Override
     public void generateImportTemplate(OutputStream outputStream) throws IOException {
         try {
-            // TODO: 参数校验
+            // 参数校验
             if (outputStream == null) {
                 throw new BizIllegalArgumentException("输出流不能为空");
             }
 
-            // TODO: 实现模板生成功能
-            // 1. 创建空的示例数据列表（可选）
-            // List<${entityName}ExcelDTO> templateData = new ArrayList<>();
-            //
-            // // 可以添加一行示例数据，帮助用户理解如何填写
-            // ${entityName}ExcelDTO exampleRow = new ${entityName}ExcelDTO();
-            // // 设置示例数据
-            <#list fieldList as fieldItem>
-            <#if !fieldItem.primaryKey>
-            <#if fieldItem.type == "String">
-            // exampleRow.set${fieldItem.name?cap_first}("示例${fieldItem.columnName}");
-            <#elseif fieldItem.type == "Integer" || fieldItem.type == "Long">
-            // exampleRow.set${fieldItem.name?cap_first}(0);
-            <#elseif fieldItem.type == "Double" || fieldItem.type == "BigDecimal">
-            // exampleRow.set${fieldItem.name?cap_first}(0.0);
-            <#elseif fieldItem.type == "Date">
-            // exampleRow.set${fieldItem.name?cap_first}(new Date());
-            <#elseif fieldItem.type == "Boolean">
-            // exampleRow.set${fieldItem.name?cap_first}(false);
-            </#if>
-            </#if>
-            </#list>
-            // templateData.add(exampleRow);
+            // TODO: 实现模板生成功能 https://github.com/fast-excel/fastexcel 使用fastexcel
 
-            // 2. 使用EasyExcel写入模板
-            // // 创建写入器
-            // ExcelWriter excelWriter = EasyExcel.write(outputStream, ${entityName}ExcelDTO.class).build();
-            // // 创建一个工作表
-            // WriteSheet writeSheet = EasyExcel.writerSheet("${entityName}数据").build();
-            //
-            // // 写入数据
-            // excelWriter.write(templateData, writeSheet);
-            //
-            // // 关闭写入器
-            // excelWriter.finish();
-
-            log.info("成功生成${entityName}Excel导入模板");
         } catch (BizIllegalArgumentException e) {
             log.error("生成${entityName}Excel模板参数错误: {}", e.getMessage());
             throw e;
@@ -314,38 +218,5 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
     private void fillPrimaryKey(${entityName} entity) {
         entity.set${common.getPrimaryName(fieldList)?cap_first}(UUID.randomUUID());
     }
-
-    /**
-     * 校验Excel DTO数据的有效性
-     *
-     * @param dto 要校验的Excel DTO
-     * @throws BizIllegalArgumentException 如果数据无效
-     */
-    private void validateExcelDTO(${entityName}ExcelDTO dto) {
-        // TODO: 实现数据校验逻辑
-        // 以下是示例校验逻辑，需要根据实际业务需求进行调整
-
-        // 1. 必填字段校验
-        <#list fieldList as fieldItem>
-        <#if !fieldItem.primaryKey>
-        <#if fieldItem.type == "String">
-        if (ObjectUtils.isEmpty(dto.get${fieldItem.name?cap_first}())) {
-            throw new BizIllegalArgumentException("${fieldItem.columnName}不能为空");
-        }
-        </#if>
-        </#if>
-        </#list>
-
-        // 2. 数据格式校验
-        // 例如：邮箱格式、手机号格式、日期格式等
-
-        // 3. 数据范围校验
-        // 例如：数值范围、枚举值等
-
-        // 4. 业务规则校验
-        // 例如：特定的业务约束条件
-    }
-
-
 
 }

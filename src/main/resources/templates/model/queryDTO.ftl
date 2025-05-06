@@ -20,6 +20,7 @@ import java.util.Date;
 
 /**
  * ${entityName}查询条件DTO
+ * TODO: 需要根据实际情况修改
  *
  * 用于封装查询${entityName}实体的条件参数
  * 包含与实体字段对应的查询参数
@@ -41,12 +42,7 @@ public class ${entityName}QueryDTO implements Serializable {
     private ${fieldItem.type} ${fieldItem.name};
 </#list>
 
-    /**
-     * 创建一个新的${entityName}QueryDTO实例
-     *
-     * @return 新的${entityName}QueryDTO实例
-     */
-    public static ${entityName}QueryDTO create() {
-        return new ${entityName}QueryDTO();
-    }
+    private Integer page;
+    private Integer perPage;
+    private String sortField;
 }
